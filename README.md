@@ -16,6 +16,9 @@ Ning
 6. Express.js 集成
 7. 异常处理
 8. 实时监控与报警
+  * CPU
+  * 内存
+  * 异常
   * https://github.com/mnutt/hummingbird
   * https://github.com/NarrativeScience/Log.io
 9. 日志服务
