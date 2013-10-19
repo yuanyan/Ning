@@ -41,6 +41,6 @@ if (cluster.isMaster) {
     server.all('/cgi-bin/:mod', function(req, res, next){
         req.mod(req, res, next)
     })
-    // server.listen(rc.port)
-    server.listen(88)
+
+    server.listen(rc.port)
 }
