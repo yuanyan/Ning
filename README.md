@@ -29,6 +29,8 @@ Ning
   * 错误日志
   * 业务日志
 10. Node.js版本升级策略
+  * 版本推荐 >=0.10.21 <0.11
+  * [0.10.*版本相关更新](http://www.joyent.com/blog/announcing-the-latest-node-update)
 11. 配置化驱动服务
   * `Ningfile`配置文件驱动
   * `package.json`配置文件驱动模块依赖管理
@@ -40,6 +42,5 @@ Ning
  * https://github.com/NarrativeScience/Log.io
  * https://github.com/isaacs/nave
  * https://github.com/flatiron/winston
-
 
 
