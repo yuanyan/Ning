@@ -4,9 +4,9 @@ Ning
 面向海量用户的`Node.js`工业级基础服务框架
 
 ## 特性
-1. 负载策略
+1. 负载服务集成
   * LVS分发请求
-  * L5（负载均衡、过载保护、容灾）
+  * HAProxy（负载均衡、过载保护、容灾）
 2. 发布部署策略
   * 自动回滚策略
   * 增量部署策略
@@ -30,8 +30,8 @@ Ning
   * 业务日志
 10. Node.js版本升级策略
 11. 配置化驱动服务
-  * `Ningfile`配置文件
-  * `package.json`配置文件驱动管理模块依赖
+  * `Ningfile`配置文件驱动
+  * `package.json`配置文件驱动模块依赖管理
 
 ## 开源实践
  * https://github.com/isaacs/node-supervisor
