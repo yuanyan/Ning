@@ -4,6 +4,18 @@ var os = require('os')
 var numCPUs = os.cpus().length
 
 if (cluster.isMaster) {
+    var masterPid = process.pid
+
+    cluster.on('listening', function(worker, address) {
+        console.log( (new Date).toISOString() + ' ' + masterPid +
+            '\t| worker ' + worker.process.pid + ' listening ' + address.address + ':' + address.port)
+    })
+
+    cluster.on('exit', function(worker, code, signal) {
+        console.log( (new Date).toISOString() + ' ' + masterPid +
+            '\t| worker ' + worker.process.pid + ' died')
+    })
+
     if (rc.instances == 'max') {
         rc.instances = numCPUs
     }
@@ -11,10 +23,6 @@ if (cluster.isMaster) {
     for (var i = 0; i < Number(rc.instances); i++) {
         cluster.fork()
     }
-
-    cluster.on('exit', function(worker, code, signal) {
-        console.log('worker ' + worker.process.pid + ' died')
-    })
 } else {
     // Workers can share any TCP connection
     // In this case its a HTTP server
@@ -24,7 +32,9 @@ if (cluster.isMaster) {
     var node_modules = rc.node_modules
 
     if(node_modules) {
-        node_modules = [].concat(node_modules).map(path.resolve)
+        node_modules = [].concat(node_modules).map(function(p){
+            return path.resolve(p)
+        })
         module.paths = module.paths.concat(node_modules)
     }
 

@@ -1,1 +1,1 @@
-module.exports = function(req, res, next){    res.send('hello world')}
+module.exports = function(req, res, next){    res.send('hello world\n')}
