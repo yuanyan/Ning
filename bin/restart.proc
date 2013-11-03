@@ -1,1 +1,1 @@
-web: node index.js --restart
+web: kill -HUP $( cat ./logs/ning.pid )

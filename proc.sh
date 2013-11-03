@@ -13,10 +13,10 @@ set -e
 
 # Usage message that is displayed when `--help` is given as an argument.
 usage() {
-  echo "Usage: xman [<procfile>]"
+  echo "Usage: proc [<procfile>]"
   echo "Run procfile using shell."
   echo
-  echo "The xman script reads commands from <procfile> and starts up the"
+  echo "The proc script reads commands from <procfile> and starts up the"
   echo "processes that it describes."
 }
 
