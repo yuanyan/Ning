@@ -136,12 +136,17 @@ sending SIGTERM to all processes
 ```
 
 ## 开源实践
- * https://github.com/isaacs/node-supervisor
- * https://github.com/nodejitsu/forever
- * https://github.com/mnutt/hummingbird
- * https://github.com/NarrativeScience/Log.io
- * https://github.com/isaacs/nave
- * https://github.com/flatiron/winston
+ * 进程
+    － https://github.com/isaacs/node-supervisor
+    － https://github.com/nodejitsu/forever
+ * 监控
+    － https://github.com/mnutt/hummingbird
+    － https://github.com/Unitech/pm2
+ * 日志
+    － https://github.com/NarrativeScience/Log.io
+    － https://github.com/flatiron/winston
+ * 过载保护 － https://github.com/lloyd/node-toobusy
+ * Node版本切换 － https://github.com/isaacs/nave
 
 ## 版权协议
 
