@@ -5,13 +5,20 @@ var numCPUs = os.cpus().length
 
 if (cluster.isMaster) {
     var Monitor = require('./middleware/monitor').Monitor;
+
     var monitor = new Monitor({
         interval: 6000 * 60,
-        pid: process.pid
+        cluster: cluster
     });
+
     monitor.on('os', function(data){
 
     });
+
+    monitor.on('process', function(data){
+
+    });
+
     var pid = process.pid
     var log = function (info){
         console.log( (new Date).toISOString() + ' Master ' + pid + '\t| ' + info )
