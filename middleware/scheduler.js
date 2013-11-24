@@ -1,18 +1,46 @@
+function Timer(){}
 
-/**
- * Date-based scheduler
- * @param date
- * @param job
- * @returns {*}
- */
-exports.runOnDate = function (date, job){
+Timer.prototype.schedule = function (task, when){
     var now = (new Date()).getTime();
-    var then = date.getTime();
 
-    if (then < now){
-        process.nextTick(job);
-        return null;
+    if(when.getTime){
+        when = when.getTime();
     }
 
-    return setTimeout(job, (then - now));
+    if (when <= now){
+        process.nextTick(task);
+    }else {
+        this.id = setTimeout(task, when - now);
+    }
+
+    return this;
+}
+
+Timer.prototype.cancel = function(){
+    if(this.id){
+        clearTimeout(this.id);
+        this.id = null;
+    }
+    return this;
+}
+
+/**
+ * Schedules the specified task for execution at the specified time.
+ * @param task
+ * @param when
+ * @returns {*}
+ */
+exports.job = function(task, when){
+    var t = new Timer();
+    return t.schedule(task, when)
+};
+
+/**
+ * Schedules the specified task for execution at the specified time.
+ * @param task
+ * @param when
+ * @returns {*}
+ */
+exports.cron = function(task, when){
+
 };

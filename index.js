@@ -1,6 +1,7 @@
 var rc = require('./Ningfile')
 var cluster = require('cluster')
 var os = require('os')
+var logger = require('./middleware/logger')
 var numCPUs = os.cpus().length
 
 if (cluster.isMaster) {

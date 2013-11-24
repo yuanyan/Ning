@@ -1,12 +1,43 @@
 Ning
 ====
 
-[中文](./README_ZH.md)
+面向海量用户的`Node.js`工业级基础服务框架
 
-## Getting start
+## 特性
+1. 负载服务集成
+  * LVS分发请求
+  * HAProxy（负载均衡、过载保护、容灾）
+2. 发布部署策略
+  * 自动回滚策略
+  * 增量部署策略
+  * 热部署策略
+3. 单机多核策略
+4. 单机内存策略
+5. `Redis`缓存服务集成
+6. `Express.js`集成
+7. 异常处理
+8. 实时监控与报警
+  * CPU使用率（用户态、内核态、IOWait等）
+  * CPU负载
+  * 内存使用率
+  * 磁盘空间使用率
+  * 网络并发请求量
+  * 未捕获异常
+  * 服务可用状态（可通过Web前端来监控）
+9. 日志服务
+  * 访问日志
+  * 错误日志
+  * 业务日志
+10. Node.js版本升级策略
+  * 版本推荐 >=0.10.21 <0.11
+  * [0.10.*版本相关更新](http://www.joyent.com/blog/announcing-the-latest-node-update)
+11. 配置化驱动服务
+  * `Ningfile`配置文件驱动
+  * `package.json`配置文件驱动模块依赖管理
 
-Install
+## 开始
 
+安装依赖包
 ```sh
 $ npm install
 npm http GET https://registry.npmjs.org/express/3.4.2
@@ -26,8 +57,7 @@ express@3.4.2 node_modules/express
 └── connect@2.9.2 (uid2@0.0.2, pause@0.0.1, raw-body@0.0.3, qs@0.6.5, bytes@0.2.0, negotiator@0.2.8, multiparty@2.2.0)
 ```
 
-Start
-
+启动
 ```sh
 $ sudo sh ./proc.sh ./bin/start.proc
 2013-11-03T17:20:07.000Z web.1  | 'node index.js' started with pid 2843
@@ -37,14 +67,12 @@ $ sudo sh ./proc.sh ./bin/start.proc
 2013-11-03T17:20:07.693Z Master 2843    | Worker 2847 listening 0.0.0.0:80
 ```
 
-It's work?
-
+测试
 ```sh
 $ curl 0.0.0.0/cgi-bin/hello
 hello world
 ```
-Restart
-
+重启
 ```sh
 $ sudo sh ./proc.sh ./bin/restart.proc
 2013-11-03T17:22:22.796Z Master 2843    | Got SIGHUP signal, restarting workers
@@ -79,8 +107,7 @@ $ sudo sh ./proc.sh ./bin/restart.proc
 2013-11-03T17:22:23.301Z Master 2843    | Worker 2873 listening 0.0.0.0:80
 ```
 
-Stop
-
+关闭
 ```sh
 $ sudo sh ./proc.sh ./bin/stop.proc
 2013-11-03T17:23:29.104Z Master 2843    | Got SIGQUIT signal, killing master and workers
@@ -108,7 +135,23 @@ SIGINT received
 sending SIGTERM to all processes
 ```
 
-## License
+## 开源实践
+ * 进程
+    * https://github.com/isaacs/node-supervisor
+    * https://github.com/nodejitsu/forever
+
+ * 监控
+    * https://github.com/mnutt/hummingbird
+    * https://github.com/Unitech/pm2
+
+ * 日志
+    * https://github.com/NarrativeScience/Log.io
+    * https://github.com/flatiron/winston
+
+ * 过载保护 － https://github.com/lloyd/node-toobusy
+ * Node版本切换 － https://github.com/isaacs/nave
+
+## 版权协议
 
 The MIT License (MIT)
 
