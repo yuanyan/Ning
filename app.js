@@ -1,8 +1,8 @@
 // Workers can share any TCP connection
 // In this case its a HTTP server
-var ningfilePath = process.env.NINGFILE_PATH || './Ningfile';
+var ningfile = process.env.NINGFILE || './Ningfile';
 var silent = 'test' == process.env.NODE_ENV;
-var rc = require(ningfilePath);
+var rc = require(ningfile);
 var express = require('express');
 var app = express();
 var path = require('path');
