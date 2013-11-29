@@ -1,29 +1,15 @@
-var rc = require('./Ningfile')
-var cluster = require('cluster')
-var os = require('os')
-var logger = require('./middleware/logger')
-var numCPUs = os.cpus().length
+var cluster = require('cluster');
+var os = require('os');
+var numCPUs = os.cpus().length;
 
 if (cluster.isMaster) {
-    var Monitor = require('./middleware/monitor').Monitor;
 
-    var monitor = new Monitor({
-        interval: 6000 * 60,
-        cluster: cluster
-    });
+    var ningfilePath = process.env.NINGFILE_PATH || './Ningfile';
+    var rc = require(ningfilePath);
+    var logger = require('./service/logger');
+    var info = logger.info;
+    var pid = process.pid;
 
-    monitor.on('os', function(data){
-
-    });
-
-    monitor.on('process', function(data){
-
-    });
-
-    var pid = process.pid
-    var log = function (info){
-        console.log( (new Date).toISOString() + ' Master ' + pid + '\t| ' + info )
-    }
     var killWorker = function(worker, done){
         // Because long living server connections may block workers from disconnecting,
         // it may be useful to send a message, so application specific actions may be taken to close them.
@@ -46,14 +32,14 @@ if (cluster.isMaster) {
                 return done();
             }
             var workerPid = cluster.workers[workers[i]].process.pid;
-            log('Killing worker ' + workerPid);
+            info('Killing worker ' + workerPid);
             killWorker(cluster.workers[workers[i]], function(){
-                log('Worker ' + workerPid + ' shutdown complete');
+                info('Worker ' + workerPid + ' shutdown complete');
                 i++;
                 if(restart){
                     var newWorker = cluster.fork();
                     newWorker.on('listening', function() {
-                        log('Replacement worker ' + newWorker.process.pid + ' online');
+                        info('Replacement worker ' + newWorker.process.pid + ' online');
                         kill(i);
                     });
                 }else{
@@ -70,31 +56,31 @@ if (cluster.isMaster) {
     require('fs').writeFileSync(pidfile, pid);
 
     cluster.on('listening', function(worker, address) {
-        log('Worker ' + worker.process.pid + ' listening ' + address.address + ':' + address.port)
+        info('Worker ' + worker.process.pid + ' listening ' + address.address + ':' + address.port)
     })
 
     // Restart workers without downtime
     process.on('SIGHUP', function() {
-        log('Got SIGHUP signal, restarting workers')
+        info('Got SIGHUP signal, restarting workers')
 
         // Delete the cached module, so we can reload the app
         delete require.cache[require.resolve("./index")]
 
         killWorkers(true, function(){
-            log('Workers success restarted')
+            info('Workers success restarted')
         })
     });
 
     process.on('SIGQUIT', function(){
-        log('Got SIGQUIT signal, killing master and workers')
+        info('Got SIGQUIT signal, killing master and workers')
         killWorkers(false, function(){
-            log('Workers success killed')
+            info('Workers success killed')
             process.exit()
         })
 
         // Normally below code should no opportunity to execution
         setTimeout(function() {
-            log("Could not close connections in time, forcefully shutting down");
+            info("Could not close connections in time, forcefully shutting down");
             process.exit()
         }, 1000 * 10);
 
@@ -102,75 +88,25 @@ if (cluster.isMaster) {
 
     cluster.on('exit', function(worker, code, signal) {
         if(worker.suicide === true) {
-            log('Worker ' + worker.process.pid + ' was just suicide')
+            info('Worker ' + worker.process.pid + ' was just suicide')
         }else if(code !== 0) {
-            log('Worker ' + worker.process.pid + ' died with error code: ' + code)
+            info('Worker ' + worker.process.pid + ' died with error code: ' + code)
         }else {
-            log('Worker ' + worker.process.pid + ' died normally')
+            info('Worker ' + worker.process.pid + ' died normally')
         }
 
         if(signal) {
-            log('Worker ' + worker.process.pid + ' was killed by signal: ' + signal)
+            info('Worker ' + worker.process.pid + ' was killed by signal: ' + signal)
         }
     })
 
-    if (rc.instances == 'max') {
-        rc.instances = numCPUs
+    if (rc.worker_processes == 'auto') {
+        rc.worker_processes = numCPUs
     }
     // Fork workers.
-    for (var i = 0; i < Number(rc.instances); i++) {
+    for (var i = 0; i < Number(rc.worker_processes); i++) {
         cluster.fork()
     }
 } else {
-    // Workers can share any TCP connection
-    // In this case its a HTTP server
-    var express = require('express')
-    var app = express()
-    var path = require('path')
-    var node_modules = rc.node_modules
-    var server
-    var pid = process.pid
-    var log = function (info){
-        console.log( (new Date).toISOString() + ' Worker ' + pid + '\t| ' + info )
-    }
-
-    if(node_modules) {
-        node_modules = [].concat(node_modules).map(function(p){
-            return path.resolve(p)
-        })
-        module.paths = module.paths.concat(node_modules)
-    }
-
-    app.param('mod', function(req, res, next, name){
-        try{
-            var mod = require(name)
-            req.mod = mod
-            next()
-        }catch(err){
-            next(err);
-        }
-    })
-
-    app.all('/cgi-bin/:mod', function(req, res, next){
-        req.mod(req, res, next)
-    })
-
-
-    process.on('message', function(msg) {
-        if(msg === 'shutdown') {
-            log("Received kill signal, shutting down gracefully");
-            server.close(function() {
-                log("Closed out remaining connections");
-                process.exit(0)
-            });
-            // Normally below code should no opportunity to execution
-            setTimeout(function() {
-                log("Could not close connections in time, forcefully shutting down");
-                process.exit()
-            }, 2000);
-        }
-
-    })
-
-    server = app.listen(rc.port)
+    require('./app')
 }

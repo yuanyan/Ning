@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+echo
+../proc ../bin/start.proc &
+pid=$!
+
+sleep 2
+
+wrk 'http://localhost:3000/cgi-bin/hello' \
+  -d 3 \
+  -c 50 \
+  -t 4 \
+  | grep 'Requests/sec' \
+  | awk '{ print "  " $2 }'
+
+kill $pid
