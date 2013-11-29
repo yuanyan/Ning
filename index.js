@@ -4,8 +4,8 @@ var numCPUs = os.cpus().length;
 
 if (cluster.isMaster) {
 
-    var ningfilePath = process.env.NINGFILE_PATH || './Ningfile';
-    var rc = require(ningfilePath);
+    var ningfile = process.env.NINGFILE || './Ningfile';
+    var rc = require(ningfile);
     var logger = require('./service/logger');
     var info = logger.info;
     var pid = process.pid;
@@ -50,10 +50,6 @@ if (cluster.isMaster) {
         }
         kill(0)
     }
-
-    // Put pidfile to logs directory
-    var pidfile = require('path').join(__dirname, 'logs/ning.pid')
-    require('fs').writeFileSync(pidfile, pid);
 
     cluster.on('listening', function(worker, address) {
         info('Worker ' + worker.process.pid + ' listening ' + address.address + ':' + address.port)
