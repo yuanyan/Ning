@@ -1,6 +1,8 @@
 Ning
 ====
 
+Node.js base service framework
+
 [中文](./README_ZH.md)
 
 ## Getting start
@@ -29,7 +31,7 @@ express@3.4.2 node_modules/express
 Start
 
 ```sh
-$ sudo sh ./proc.sh ./bin/start.proc
+$ sudo sh ./proc ./bin/start.proc
 2013-11-03T17:20:07.000Z web.1  | 'node index.js' started with pid 2843
 2013-11-03T17:20:07.691Z Master 2843    | Worker 2849 listening 0.0.0.0:80
 2013-11-03T17:20:07.693Z Master 2843    | Worker 2850 listening 0.0.0.0:80
@@ -46,7 +48,7 @@ hello world
 Restart
 
 ```sh
-$ sudo sh ./proc.sh ./bin/restart.proc
+$ sudo sh ./proc ./bin/restart.proc
 2013-11-03T17:22:22.796Z Master 2843    | Got SIGHUP signal, restarting workers
 2013-11-03T17:22:22.796Z Master 2843    | Killing worker 2847
 2013-11-03T17:22:22.800Z Worker 2847    | Received kill signal, shutting down gracefully
@@ -82,7 +84,7 @@ $ sudo sh ./proc.sh ./bin/restart.proc
 Stop
 
 ```sh
-$ sudo sh ./proc.sh ./bin/stop.proc
+$ sudo sh ./proc ./bin/stop.proc
 2013-11-03T17:23:29.104Z Master 2843    | Got SIGQUIT signal, killing master and workers
 2013-11-03T17:23:29.104Z Master 2843    | Killing worker 2870
 2013-11-03T17:23:29.107Z Worker 2870    | Received kill signal, shutting down gracefully
