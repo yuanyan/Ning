@@ -1,1 +1,1 @@
-web: kill -HUP $( cat ./logs/ning.pid )
+web: kill -HUP $( cat $PIDFILE_PATH )

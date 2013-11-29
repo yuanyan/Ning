@@ -1,1 +1,1 @@
-web: kill -QUIT $( cat ./logs/ning.pid )
+web: kill -QUIT $( cat $PIDFILE_PATH )
