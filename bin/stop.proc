@@ -1,1 +1,1 @@
-web: kill -QUIT $( cat $PIDFILE_PATH )
+web: kill -QUIT $( cat $PIDFILE )

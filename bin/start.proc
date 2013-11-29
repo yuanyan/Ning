@@ -1,1 +1,1 @@
-web: node $MAINFILE_PATH
+web: node $MAINFILE

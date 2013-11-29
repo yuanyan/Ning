@@ -1,1 +1,1 @@
-web: kill -HUP $( cat $PIDFILE_PATH )
+web: kill -HUP $( cat $PIDFILE )
