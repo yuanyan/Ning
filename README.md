@@ -1,13 +1,13 @@
 Ning
 ====
 
-Node.js base service framework
+Node.js Web Application Driver
 
 [中文](./README_ZH.md)
 
 ## Getting start
 
-Install
+### Install
 
 ```sh
 $ npm install
@@ -28,10 +28,10 @@ express@3.4.2 node_modules/express
 └── connect@2.9.2 (uid2@0.0.2, pause@0.0.1, raw-body@0.0.3, qs@0.6.5, bytes@0.2.0, negotiator@0.2.8, multiparty@2.2.0)
 ```
 
-Start
+### Start
 
 ```sh
-$ sudo sh ./proc ./bin/start.proc
+$ npm start
 2013-11-03T17:20:07.000Z web.1  | 'node index.js' started with pid 2843
 2013-11-03T17:20:07.691Z Master 2843    | Worker 2849 listening 0.0.0.0:80
 2013-11-03T17:20:07.693Z Master 2843    | Worker 2850 listening 0.0.0.0:80
@@ -45,10 +45,11 @@ It's work?
 $ curl 0.0.0.0/cgi-bin/hello
 hello world
 ```
-Restart
+
+### Restart
 
 ```sh
-$ sudo sh ./proc ./bin/restart.proc
+$ npm restart
 2013-11-03T17:22:22.796Z Master 2843    | Got SIGHUP signal, restarting workers
 2013-11-03T17:22:22.796Z Master 2843    | Killing worker 2847
 2013-11-03T17:22:22.800Z Worker 2847    | Received kill signal, shutting down gracefully
@@ -81,10 +82,10 @@ $ sudo sh ./proc ./bin/restart.proc
 2013-11-03T17:22:23.301Z Master 2843    | Worker 2873 listening 0.0.0.0:80
 ```
 
-Stop
+### Stop
 
 ```sh
-$ sudo sh ./proc ./bin/stop.proc
+$ npm stop
 2013-11-03T17:23:29.104Z Master 2843    | Got SIGQUIT signal, killing master and workers
 2013-11-03T17:23:29.104Z Master 2843    | Killing worker 2870
 2013-11-03T17:23:29.107Z Worker 2870    | Received kill signal, shutting down gracefully

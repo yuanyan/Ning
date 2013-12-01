@@ -1,14 +1,14 @@
 var path = require('path');
 var winston = require('winston');
 
-var dailyLogger = new (winston.Logger)({
+var webLogger = new (winston.Logger)({
     transports: [
         new winston.transports.Console({
             timestamp: true,
             handleExceptions: true
         }),
         new winston.transports.DailyRotateFile({
-            filename: path.join(__dirname, '..', 'logs', 'daily.log'),
+            filename: path.join(__dirname, '..', 'logs', 'web.log'),
             datePattern: '.yyyy-MM-dd',
             json: false,
             timestamp: true,
@@ -32,11 +32,32 @@ var errorLogger = new (winston.Logger)({
     exitOnError: false
 });
 
+
+var accessLogger = new (winston.Logger)({
+    transports: [
+        new winston.transports.Console({
+            timestamp: false
+        }),
+        new winston.transports.DailyRotateFile({
+            filename: path.join(__dirname, '..', 'logs', 'access.log'),
+            datePattern: '.yyyy-MM-dd',
+            json: false,
+            timestamp: false
+        })
+    ],
+    exitOnError: false
+});
+
 module.exports = {
-    info: dailyLogger.info,
-    warn: dailyLogger.warn,
+    info: webLogger.info,
+    warn: webLogger.warn,
     error: function(){
-        dailyLogger.error.apply(dailyLogger, arguments);
+        webLogger.error.apply(webLogger, arguments);
         errorLogger.error.apply(errorLogger, arguments);
+    },
+    stream: {
+        write: function(msg){
+            accessLogger.log('silly', msg.trim())
+        }
     }
 };
